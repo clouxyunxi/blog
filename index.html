@@ -221,9 +221,12 @@
   </script>
 
   <script>
-    window.$docsify = {
-      loadSidebar: true
-    };
+	  window.$docsify = {
+		loadSidebar: true,
+		alias: {
+		  "/.*/_sidebar.md": "/_sidebar.md"
+		}
+	  };
   </script>
   
   <!-- 引入搜索插件 -->
