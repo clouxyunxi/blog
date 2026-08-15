@@ -43,16 +43,11 @@
 
   .emmm
   {
-    /*width: 90%;内容区域的最大宽度*/
-    margin:1em;/*内容区域与边框之间的间距*/
-    margin-bottom:3em;/*内容区域与按钮之间的间距*/
-    background-color:#ddeeff;/*内容区域的背景颜色*/
-    border-radius: 0.5em; /*内容区域的圆角*/
-    padding:1em; /*内容区域的内边距*/
-    border-style:solid;/*内容区域的边框样式*/
-    border-width: 2.5px; /*内容区域的边框宽度*/
-    border-color: #75D3FF;/*内容区域的边框颜色*/
-    color: #75D3FF;/*内容区域的文本颜色*/
+      width: 45%;
+      float: left;
+      margin: 10px;
+      border: #75D3FF solid 2px;
+      padding: 5px;
   }
   /*
   table
@@ -183,49 +178,31 @@
     
 <body style="background-color: #75D3FF1A;">
     <br>
-    <!--
-    <table>
-        <tr> </tr>
-        <tr>
-            <th><img src="owo.webp" width="222" alt="头像"></th>
-            <th><h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#75D3FF">cloux's </font><font color="#464646">blog</font></h1></th>
-        </tr>
-        <tr> </tr>
-    </table>
-    -->
-    <table style="width:100%">
-      <tr><td><img src="owo.webp" width="180" alt="头像"></td></tr>
-      <tr>
-          <td>
-              <h1><font color="#75D3FF">cloux's </font><font color="#464646">blog</font></h1>
-          </td>
-      </tr>
-      <tr>
-          <td>
-                <hr>
-                <p>qq:3819475378<br>email:wo.bu.dao.a@outlook.com</p>
-        	</td>
-    	</tr>
-      <tr>
-          <td>
-              <hr>          
-          </td> 
-      </tr>
-    </table>
-    
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    
-    <div id="app">加载ing</div>
-    <!--<div id="gitalk-container"></div>-->
-    <br>
-    <br>
     <hr>
-    <center>© 2026 cloux.保留所有权利。</center>
+    <table>
+      <tr>
+          <th><img src="owo.webp" width="180" alt="头像"></th>
+          <th><h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#75D3FF">cloux's </font><font color="#464646">blog</font></h1><br>qq:3819475378<br>email:wo.bu.dao.a@outlook.com<br>owo</th>
+      </tr>
+    </table>
+    <hr>
+    
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    
+    <div class="emmm">
+      <div id="app">加载ing</div>
+      <table style="background-color: #75D3FF;width: 100%;">
+        <tr>
+          <th><center>© 2026 cloux.保留所有权利。</center></th>
+        </tr>
+      </table>
+    </div>
+    <br>
 	<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.1/dist/autoload.js"></script>
 
   <!-- 搜索插件配置 -->
@@ -241,28 +218,13 @@
       id: location.pathname,      // Ensure uniqueness and length less than 50
       distractionFreeMode: false  // Facebook-like distraction free mode
     })
-    gitalk.render('gitalk-container')
   </script>
 
-  <!--评论插件-->
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.css" />
-  <script src="//cdn.jsdelivr.net/npm/docsify@5/dist/plugins/gitalk.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
   <script>
-    const gitalk = new Gitalk({
-      clientID: 'Ov23ctNXQEZfsA9FxZvO',
-      clientSecret: '659025f42a32e2dc64fa468621d1bc7d4b8fb1c8',
-      repo: 'cloux/blog',
-      owner: 'clouxyunxi',
-      admin: [
-        'clouxyunxi',
-      ],
-      // facebook-like distraction free mode
-      distractionFreeMode: false,
-    });
-    gitalk.render('gitalk-container')
+    window.$docsify = {
+      loadSidebar: true
+    };
   </script>
-
   
   <!-- 引入搜索插件 -->
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
