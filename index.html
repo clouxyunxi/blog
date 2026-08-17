@@ -1,242 +1,268 @@
-
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <link rel="shortcut icon" href="owo.webp">
-  <title>cloux's blog</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Description">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <!--<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">-->
-</head>
-    
-<style>
-  :root {
-    --theme-color: #75D3FF;        /* 主色调，改为你喜欢的颜色 */
-    --content-max-width: 80ch;      /* 内容区域最大宽度 */
-  }
-  body
-  {
-    font-family: "Sans-serif";
-    margin: 0;
-    padding: 0;
-  }
-  a
-  {
-    text-decoration: none;
-  	color: rgb(70, 70, 70);    
-  }
-  a:hover 
-  { 
-    text-decoration: underline;
-  }
-  p
-  {
-  	color: rgb(70, 70, 70);    
-  }
-  hr {
-    border: none;
-    height: 2px;
-    background: #75D3FF;
-  }
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="shortcut icon" href="owo.webp">
+        <title>cloux's blog</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <style>
+        .emmm
+        {
+            float: left;
+            margin: 10px;
+            border: #75D3FF solid 2px;
+            padding: 5px;
+        }
+        button
+        {
+            background-color: #75D3FF1A;
+            float: left;
+            margin: 10px;
+            border: #75D3FF solid 2px;
+            padding: 5px;
+        }
+        button:hover
+        {
+            background-color: #75D3FF;
+            color: #fff;
+        }
+        input
+        {
+            background-color: #75D3FF1A;
+            float: left;
+            margin: 10px;
+            border: #75D3FF solid 2px;
+            padding: 5px;
+        }
+        input:focus
+        {
+            outline: none;
+            border: #20b9ff solid 2px;
+        }
+        body
+        {
+            font-family: "Sans-serif";
+            margin: 0;
+            padding: 0;
+        }
+        a
+        {
+            text-decoration: none;
+            color: rgb(70, 70, 70);    
+        }
+        a:hover 
+        { 
+            text-decoration: underline;
+        }
+        p
+        {
+            color: rgb(70, 70, 70);    
+        }
+        br
+        {
+            clear: both;
+        }
+        hr
+        {
+            border: none;
+            height: 2px;
+            background: #75D3FF;
+            clear: both;
+        }
+        #search-results
+        {
+            clear: both;
+            margin: 10px;
+        }
+        .search-result-item
+        {
+            margin: 8px 0;
+            padding: 8px 12px;
+            border: #75D3FF solid 1px;
+            background-color: #fff;
+        }
+        .search-result-item a
+        {
+            display: block;
+            font-size: 1.1em;
+            margin-bottom: 4px;
+        }
+        .search-result-item p
+        {
+            margin: 4px 0 4px 16px;
+            color: #666;
+        }
+        .search-result-item mark
+        {
+            background-color: #75D3FF;
+            color: #fff;
+            padding: 0 2px;
+        }
+        .search-empty
+        {
+            margin: 10px;
+            color: #666;
+        }
+         /* 手机端适配 */
+        @media screen and (max-width: 768px) 
+        {
+            body
+            {
+            font-size: 16px;
+            }
+            .emmm
+            {
+            margin: 0.5em;
+            margin-bottom: 1.5em;
+            padding: 0.75em;
+            }
+            /* 表格转为竖向堆叠布局 */
+            table, tbody, tr, td, th
+            {
+            display: block;
+            width: 100% !important;
+            box-sizing: border-box;
+            text-align: center;
+            }
+            table
+            {
+            margin: 0;
+            }
+            td, th
+            {
+            padding: 0.25em 0;
+            }
+        }
+    </style>
+    <body style="background-color: #75D3FF1A;">
+        <table class="emmm" style="width: 98.4%;">
+            <tr>
+                <th>
+                    <table>
+                        <tr>
+                            <th><img src="owo.webp" width="211" alt="头像"></th>
+                            <th><h1><font color="#75D3FF">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cloux's </font><font color="#464646">blog</font></h1></th>
+                        </tr>
+                    </table>
+                </th>
+            </tr>
+        </table>
+        <button onclick="alert('邮箱:wo.bu.dao.a@outlook.com  qq:3819475378')">联系</button>&nbsp;<button>Ctrl+D 收藏</button>
 
-  .emmm
-  {
-      width: 45%;
-      float: left;
-      margin: 10px;
-      border: #75D3FF solid 2px;
-      padding: 5px;
-  }
-  /*
-  table
-  {
-    margin: 0 auto;
-  }
-  */
-  .input
-  {
-    margin-bottom:3em;/*输入框与按钮之间的间距*/
-    background-color:#ddeeff;/*输入框的背景颜色*/
-    border-radius: 0.5em; /*输入框的圆角*/
-    padding:1em; /*输入框的内边距*/
-    border-style:solid;/*输入框的边框样式*/
-    border-width: 2.5px; /*输入框的边框宽度*/
-    border-color: #75D3FF;/*输入框的边框颜色*/
-    color: #75D3FF;/*输入框的文本颜色*/
-    font-size: 1em;/*输入框的字体大小*/
-    width: 20em;/*输入框的宽度*/
-    height: 2em;/*输入框的高度*/
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
 
-  }
-  .button
-  {
-    margin:1em;
-    margin-bottom:3em;
-    background-color:#ddeeff;
-    border-radius: 0.5em; 
-    padding:1em; 
-    border-style:solid;
-    border-width: 2.5px; 
-    border-color: #75D3FF;
-    color: #75D3FF;
-  }
-  .button:hover
-  {
-    background-color: rgb(110, 210, 250);
-    color: #ffffff;
-    padding: 1em;
-    border: 2px solid rgb(110, 210, 250);
-  }
-  img
-  {
-    max-width: 100%;
-    height: auto;
-  }
-  iframe
-  {
-    max-width: 100%;
-  }
-  .sidebar
-  {
-      /*float: left;*/
-      margin: 10px;
-      border: #75D3FF solid 2px;
-      padding: 5px;
-  }
+        <input type="text" placeholder="搜索文章" class="emmm" id="search-input">
+        <button onclick="searchArticles()">搜索</button>
+        <br>
+        <!--搜索结果-->
+        <div id="search-results"></div>
+        <hr>
+        <!--文章列表-->
+        <div id="article-list"></div>
+        <!--/文章列表-->
+        <hr>
+        <center>© 2026 cloux.保留所有权利。</center>
 
-  /* 手机端适配 */
-  @media screen and (max-width: 768px) {
-    body
-    {
-      font-size: 16px;
-    }
-    .emmm
-    {
-      margin: 0.5em;
-      margin-bottom: 1.5em;
-      padding: 0.75em;
-    }
-    /* 表格转为竖向堆叠布局 */
-    table, tbody, tr, td, th
-    {
-      display: block;
-      width: 100% !important;
-      box-sizing: border-box;
-      text-align: center;
-    }
-    table
-    {
-      margin: 0;
-    }
-    td, th
-    {
-      padding: 0.25em 0;
-    }
-    /* 头像大小调整 */
-    .emmm img
-    {
-      width: 180px;
-      max-width: 60vw;
-    }
-    /* 标题去除多余空格 */
-    .emmm h1
-    {
-      margin: 0.5em 0;
-    }
-    /* 移除占位用的空单元格 */
-    .emmm table td:empty
-    {
-      display: none;
-    }
-    /* 输入框宽度自适应 */
-    .input
-    {
-      width: 100%;
-      max-width: 20em;
-      box-sizing: border-box;
-    }
-    /* 按钮居中 */
-    .button
-    {
-      display: inline-block;
-      margin: 0.5em;
-    }
-    /* 底部右下角 iframe 居中 */
-    div[style*="text-align: right"]
-    {
-      text-align: center !important;
-    }
-    div[style*="text-align: right"] iframe
-    {
-      width: 100%;
-      max-width: 360px;
-    }
-  }
-</style>
-    
-<body style="background-color: #75D3FF1A;">
-    <br>
-    <hr>
-    <table>
-      <tr>
-          <th><img src="owo.webp" width="180" alt="头像"></th>
-          <th><h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#75D3FF">cloux's </font><font color="#464646">blog</font></h1><br>qq:3819475378<br>email:wo.bu.dao.a@outlook.com<br>owo</th>
-      </tr>
-    </table>
-    <hr>
-    
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    
-    <div class="emmm">
-      <div id="app">加载ing</div>
-      <table style="background-color: #75D3FF;width: 100%;">
-        <tr>
-          <th><center>© 2026 cloux.保留所有权利。</center></th>
-        </tr>
-      </table>
-    </div>
-    <br>
-	<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.1/dist/autoload.js"></script>
+        <script src="articles.js"></script>
+        <script>
+            // 从 article.txt 读取文章列表并渲染
+            // 格式: 每行 "[标题](文件名)", 空行和 # 开头的注释行忽略
+            function renderArticleList() {
+                var listEl = document.getElementById('article-list');
+                fetch('article.txt')
+                    .then(function (res) { return res.text(); })
+                    .then(function (text) {
+                        var lines = text.split('\n');
+                        var html = '';
+                        for (var i = 0; i < lines.length; i++) {
+                            var line = lines[i].trim();
+                            if (!line || line.startsWith('#')) continue;
+                            var m = line.match(/^\[(.+?)\]\((.+?)\)$/);
+                            if (!m) continue;
+                            var title = m[1];
+                            var file = m[2];
+                            var encoded = encodeURIComponent(file);
+                            html += '<a href="article.html?file=' + encoded + '">' + escapeHtml(title) + '</a><br>\n';
+                        }
+                        listEl.innerHTML = html;
+                    })
+                    .catch(function (err) {
+                        listEl.innerHTML = '<p style="color:#999;margin:10px;">列表加载失败（本地 file:// 打开时无法读取 article.txt，部署后或用本地服务器可正常显示）</p>';
+                    });
+            }
+            renderArticleList();
 
-  <!-- 搜索插件配置 -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-  <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-  <script>
-    var gitalk = new Gitalk({
-      clientID: 'Ov23ctNXQEZfsA9FxZvO',
-      clientSecret: '659025f42a32e2dc64fa468621d1bc7d4b8fb1c8',
-      repo: 'cloux/blog',
-      owner: 'clouxyunxi',
-      admin: ['clouxyunxi'],
-      id: location.pathname,      // Ensure uniqueness and length less than 50
-      distractionFreeMode: false  // Facebook-like distraction free mode
-    })
-  </script>
+            // 搜索功能: 在 owo/ 下所有 .md 内容里查找关键词
+            function searchArticles() {
+                var inputEl = document.getElementById('search-input');
+                var resultsEl = document.getElementById('search-results');
+                var keyword = inputEl.value.trim();
+                if (!keyword) {
+                    resultsEl.innerHTML = '';
+                    return;
+                }
+                var articles = window.__ARTICLES__ || {};
+                var results = [];
+                var kwLower = keyword.toLowerCase();
 
-  <script>
-	  window.$docsify = {
-		loadSidebar: true,
-		alias: {
-		  "/.*/_sidebar.md": "/_sidebar.md"
-		}
-	  };
-  </script>
-  
-  <!-- 引入搜索插件 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+                for (var file in articles) {
+                    if (!articles.hasOwnProperty(file)) continue;
+                    var content = articles[file];
+                    // 标题: 文件名去掉 "日期 " 前缀和 .md 后缀
+                    var title = file.replace(/^.*?\s/, '').replace(/\.md$/i, '');
+                    // 按句子分割: 中英文标点 + 换行
+                    var sentences = content.split(/[。\n!?.!?；;]/).filter(function (s) {
+                        return s.trim().length > 0;
+                    });
+                    var matches = [];
+                    for (var i = 0; i < sentences.length; i++) {
+                        if (sentences[i].toLowerCase().indexOf(kwLower) !== -1) {
+                            matches.push(sentences[i].trim());
+                        }
+                    }
+                    if (matches.length > 0) {
+                        results.push({ file: file, title: title, matches: matches });
+                    }
+                }
 
-  <!-- Docsify v4 -->
-  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@5/dist/plugins/disqus.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@5/dist/plugins/zoom-image.min.js"></script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"9fc0306d846f4be29ea848141afeaab0","r":1}' crossorigin="anonymous"></script>
-</body>
+                if (results.length === 0) {
+                    resultsEl.innerHTML = '<div class="search-empty">没有找到包含"' + escapeHtml(keyword) + '"的文章</div>';
+                    return;
+                }
+
+                var html = '';
+                for (var i = 0; i < results.length; i++) {
+                    var r = results[i];
+                    var encoded = encodeURIComponent(r.file);
+                    html += '<div class="search-result-item">';
+                    html += '<a href="article.html?file=' + encoded + '">' + escapeHtml(r.title) + '</a>';
+                    for (var j = 0; j < r.matches.length; j++) {
+                        html += '<p>' + highlightKeyword(r.matches[j], keyword) + '</p>';
+                    }
+                    html += '</div>';
+                }
+                resultsEl.innerHTML = html;
+            }
+
+            function escapeHtml(s) {
+                return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            function highlightKeyword(sentence, keyword) {
+                var safe = escapeHtml(sentence);
+                var re = new RegExp('(' + keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+                return safe.replace(re, '<mark>$1</mark>');
+            }
+
+            // 回车触发搜索
+            document.getElementById('search-input').addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.keyCode === 13) searchArticles();
+            });
+        </script>
+    </body>
 </html>

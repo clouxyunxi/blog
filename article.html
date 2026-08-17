@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="shortcut icon" href="owo.webp">
+        <title>文章 - cloux's blog</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    </head>
+    <style>
+        body
+        {
+            font-family: "Sans-serif";
+            margin: 0;
+            padding: 0;
+            background-color: #75D3FF1A;
+        }
+        .emmm
+        {
+            float: left;
+            margin: 10px;
+            border: #75D3FF solid 2px;
+            padding: 5px;
+        }
+        a
+        {
+            text-decoration: none;
+            color: rgb(70, 70, 70);
+        }
+        a:hover
+        {
+            text-decoration: underline;
+        }
+        p
+        {
+            color: rgb(70, 70, 70);
+            line-height: 1.7;
+        }
+        br
+        {
+            clear: both;
+        }
+        .back
+        {
+            display: inline-block;
+            margin: 10px;
+            padding: 5px 10px;
+            border: #75D3FF solid 2px;
+            background-color: #75D3FF1A;
+        }
+        .search-input
+        {
+            display: inline-block;
+            margin: 10px 10px 10px 0;
+            padding: 5px;
+            border: #75D3FF solid 2px;
+            background-color: #75D3FF1A;
+        }
+        .search-input:focus
+        {
+            outline: none;
+            border: #20b9ff solid 2px;
+        }
+        .search-btn
+        {
+            display: inline-block;
+            margin: 10px;
+            padding: 5px 10px;
+            border: #75D3FF solid 2px;
+            background-color: #75D3FF1A;
+            cursor: pointer;
+        }
+        .search-btn:hover
+        {
+            background-color: #75D3FF;
+            color: #fff;
+        }
+        #article-search-results
+        {
+            clear: both;
+            margin: 10px;
+        }
+        .search-result-item
+        {
+            margin: 8px 0;
+            padding: 8px 12px;
+            border: #75D3FF solid 1px;
+            background-color: #fff;
+        }
+        .search-result-item mark
+        {
+            background-color: #75D3FF;
+            color: #fff;
+            padding: 0 2px;
+        }
+        .search-result-item a.jump-link
+        {
+            color: #464646;
+            text-decoration: none;
+        }
+        .search-result-item a.jump-link:hover
+        {
+            text-decoration: underline;
+        }
+        .search-empty
+        {
+            margin: 10px;
+            color: #666;
+        }
+        /* 文章主体容器, 跟 index.html 的 .emmm 同款边框 */
+        .article
+        {
+            margin: 10px;
+            padding: 15px 25px;
+            border: #75D3FF solid 2px;
+            background-color: #fff;
+        }
+        .article h1, .article h2, .article h3, .article h4, .article h5, .article h6
+        {
+            color: #464646;
+            margin-top: 1.2em;
+            margin-bottom: 0.5em;
+        }
+        .article h1 { font-size: 1.8em; border-bottom: #75D3FF solid 2px; padding-bottom: 5px; }
+        .article h2 { font-size: 1.5em; }
+        .article h3 { font-size: 1.25em; }
+        .article img
+        {
+            max-width: 100%;
+            height: auto;
+            border: #75D3FF solid 2px;
+            margin: 8px 0;
+        }
+        .article code
+        {
+            background-color: #f3f3f3;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+            font-size: 0.9em;
+        }
+        .article pre
+        {
+            background-color: #f3f3f3;
+            padding: 10px;
+            border: #75D3FF solid 1px;
+            overflow-x: auto;
+        }
+        .article pre code
+        {
+            background: none;
+            padding: 0;
+        }
+        .article blockquote
+        {
+            border-left: #75D3FF solid 4px;
+            margin: 8px 0;
+            padding: 4px 12px;
+            color: #666;
+            background-color: #75D3FF0D;
+        }
+        .article table
+        {
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        .article th, .article td
+        {
+            border: #75D3FF solid 1px;
+            padding: 6px 12px;
+        }
+        .article hr
+        {
+            border: none;
+            height: 2px;
+            background: #75D3FF;
+            margin: 1em 0;
+        }
+        .article-title
+        {
+            color: #75D3FF;
+            margin-top: 0;
+        }
+        .article-date
+        {
+            color: #999;
+            font-size: 0.9em;
+            margin: -8px 0 16px 0;
+            padding-bottom: 8px;
+        }
+        /* 手机端适配 */
+        @media screen and (max-width: 768px)
+        {
+            body { font-size: 16px; }
+            .article { margin: 0.5em; padding: 0.75em 1em; }
+        }
+    </style>
+    <body>
+        <table class="emmm" style="width: 98.4%;">
+            <tr>
+                <th>
+                    <table>
+                        <tr>
+                            <th><img src="owo.webp" width="111" alt="头像"></th>
+                            <th><h2><font color="#75D3FF">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cloux's </font><font color="#464646">blog</font></h2></th>
+                        </tr>
+                    </table>
+                </th>
+            </tr>
+        </table>
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        
+        <a href="index.html" class="back">&larr; 返回首页</a><input type="text" placeholder="搜索内容" class="search-input" id="article-search"><button class="search-btn" onclick="searchCurrent()">搜索</button>
+        <br>
+        <!--搜索结果-->
+        <div id="article-search-results"></div>
+        <div class="article">
+            <h1 class="article-title" id="title">加载中...</h1>
+            <div id="article-date" class="article-date"></div>
+            <div id="content"></div>
+        </div>
+        <center>© 2026 cloux.保留所有权利。</center>
+
+        <script src="articles.js"></script>
+        <script>
+            (function () {
+                var params = new URLSearchParams(location.search);
+                var file = params.get('file');
+                var titleEl = document.getElementById('title');
+                var contentEl = document.getElementById('content');
+
+                if (!file || !window.__ARTICLES__ || !window.__ARTICLES__[file]) {
+                    titleEl.textContent = '文章不存在';
+                    contentEl.innerHTML = '<p>找不到这篇文章。请从 <a href="index.html">首页</a> 进入。</p>';
+                    return;
+                }
+
+                var md = window.__ARTICLES__[file];
+                var displayTitle = file.replace(/^.*?\s/, '').replace(/\.md$/i, '');
+                titleEl.textContent = displayTitle;
+                document.title = displayTitle + " - cloux's blog";
+
+                // 从文件名解析日期 (格式: "2026-8-17 测试文档.md")
+                var dateEl = document.getElementById('article-date');
+                var dateMatch = file.match(/^(\d{4})-(\d{1,2})-(\d{1,2})\s/);
+                if (dateMatch) {
+                    var y = dateMatch[1];
+                    var m = dateMatch[2].padStart(2, '0');
+                    var d = dateMatch[3].padStart(2, '0');
+                    dateEl.textContent = y + '-' + m + '-' + d;
+                } else {
+                    dateEl.style.display = 'none';
+                }
+
+                var html = marked.parse(md);
+                contentEl.innerHTML = html;
+
+                var imgs = contentEl.querySelectorAll('img');
+                for (var i = 0; i < imgs.length; i++) {
+                    var src = imgs[i].getAttribute('src') || '';
+                    if (!/^(https?:|\/|owo\/|data:)/i.test(src)) {
+                        imgs[i].src = 'owo/' + src;
+                    }
+                }
+            })();
+
+            function searchCurrent() {
+                var inputEl = document.getElementById('article-search');
+                var resultsEl = document.getElementById('article-search-results');
+                var keyword = inputEl.value.trim();
+                if (!keyword) {
+                    resultsEl.innerHTML = '';
+                    return;
+                }
+                var contentEl = document.getElementById('content');
+                var text = contentEl.innerText;
+                var kwLower = keyword.toLowerCase();
+                var sentences = text.split(/[。\n!?.!?；;]/).filter(function (s) {
+                    return s.trim().length > 0;
+                });
+                var matches = [];
+                var matchIndex = 0;
+                for (var i = 0; i < sentences.length; i++) {
+                    if (sentences[i].toLowerCase().indexOf(kwLower) !== -1) {
+                        matchIndex++;
+                        matches.push({ text: sentences[i].trim(), idx: matchIndex });
+                    }
+                }
+                if (matches.length === 0) {
+                    resultsEl.innerHTML = '<div class="search-empty">没有找到包含"' + escapeHtml(keyword) + '"的内容</div>';
+                    return;
+                }
+                // 在原文中标记匹配位置, 用于跳转
+                markMatches(keyword, contentEl);
+
+                var html = '<div class="search-empty">找到 ' + matches.length + ' 条匹配:</div>';
+                for (var j = 0; j < matches.length; j++) {
+                    var m = matches[j];
+                    html += '<div class="search-result-item"><a href="#match-' + m.idx + '" class="jump-link">' + highlightKeyword(m.text, keyword) + '</a></div>';
+                }
+                resultsEl.innerHTML = html;
+
+                // 点击搜索结果跳转到原文位置
+                resultsEl.querySelectorAll('.jump-link').forEach(function (link) {
+                    link.addEventListener('click', function (e) {
+                        var targetId = this.getAttribute('href').substring(1);
+                        var target = document.getElementById(targetId);
+                        if (target) {
+                            e.preventDefault();
+                            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    });
+                });
+            }
+
+            function markMatches(keyword, contentEl) {
+                // 清除之前的标记
+                var oldMarks = contentEl.querySelectorAll('[data-match-mark]');
+                oldMarks.forEach(function (el) {
+                    var parent = el.parentNode;
+                    parent.replaceChild(document.createTextNode(el.textContent), el);
+                    parent.normalize();
+                });
+
+                var kwLower = keyword.toLowerCase();
+                var walker = document.createTreeWalker(contentEl, NodeFilter.SHOW_TEXT, null);
+                var textNodes = [];
+                var node;
+                while ((node = walker.nextNode())) {
+                    if (node.nodeValue.toLowerCase().indexOf(kwLower) !== -1) {
+                        textNodes.push(node);
+                    }
+                }
+                var count = 0;
+                for (var i = 0; i < textNodes.length; i++) {
+                    var textNode = textNodes[i];
+                    var text = textNode.nodeValue;
+                    var lower = text.toLowerCase();
+                    var kwLower = keyword.toLowerCase();
+                    var start = 0;
+                    while (true) {
+                        var idx = lower.indexOf(kwLower, start);
+                        if (idx === -1) break;
+                        count++;
+                        var before = text.substring(0, idx);
+                        var matchText = text.substring(idx, idx + keyword.length);
+                        var after = text.substring(idx + keyword.length);
+                        var span = document.createElement('span');
+                        span.id = 'match-' + count;
+                        span.setAttribute('data-match-mark', '1');
+                        span.textContent = matchText;
+                        var parent = textNode.parentNode;
+                        parent.insertBefore(document.createTextNode(before), textNode);
+                        parent.insertBefore(span, textNode);
+                        textNode.nodeValue = after;
+                        lower = textNode.nodeValue.toLowerCase();
+                        text = textNode.nodeValue;
+                        start = 0;
+                    }
+                }
+            }
+
+            function escapeHtml(s) {
+                return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            function highlightKeyword(sentence, keyword) {
+                var safe = escapeHtml(sentence);
+                var re = new RegExp('(' + keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+                return safe.replace(re, '<mark>$1</mark>');
+            }
+
+            document.getElementById('article-search').addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.keyCode === 13) searchCurrent();
+            });
+        </script>
+    </body>
+</html>
