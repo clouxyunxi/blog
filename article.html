@@ -40,6 +40,13 @@
         {
             clear: both;
         }
+        hr
+        {
+            border: none;
+            height: 2px;
+            background: #75D3FF;
+            clear: both;
+        }
         .back
         {
             display: inline-block;
@@ -107,13 +114,12 @@
             margin: 10px;
             color: #666;
         }
-        /* 文章主体容器, 跟 index.html 的 .emmm 同款边框 */
+        /* 文章主体容器 */
         .article
         {
             margin: 10px;
             padding: 15px 25px;
-            border: #75D3FF solid 2px;
-            background-color: #fff;
+            /*background-color: #fff;*/
         }
         .article h1, .article h2, .article h3, .article h4, .article h5, .article h6
         {
@@ -176,6 +182,21 @@
             background: #75D3FF;
             margin: 1em 0;
         }
+        /* 关键词命中标记: 页内搜索 + 首页跳转过来都会用 */
+        .article [data-match-mark]
+        {
+            background-color: #75D3FF;
+            color: #fff;
+            padding: 0 2px;
+            border-radius: 2px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        /* 淡出态: 首页跳转过来 1.2s 后加上, 平滑过渡到无高亮 */
+        .article [data-match-mark].mark-fade
+        {
+            background-color: transparent;
+            color: inherit;
+        }
         .article-title
         {
             color: #75D3FF;
@@ -196,34 +217,20 @@
         }
     </style>
     <body>
-        <table class="emmm" style="width: 98.4%;">
-            <tr>
-                <th>
-                    <table>
-                        <tr>
-                            <th><img src="owo.webp" width="111" alt="头像"></th>
-                            <th><h2><font color="#75D3FF">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cloux's </font><font color="#464646">blog</font></h2></th>
-                        </tr>
-                    </table>
-                </th>
-            </tr>
-        </table>
-
         <br>
+        <h1><font color="#75D3FF">&nbsp;&nbsp;&nbsp;cloux's </font><font color="#464646">blog</font></h1>
         <br>
-        <br>
-        <br>
-        <br>
-        
-        <a href="index.html" class="back">&larr; 返回首页</a><input type="text" placeholder="搜索内容" class="search-input" id="article-search"><button class="search-btn" onclick="searchCurrent()">搜索</button>
+        <a href="index.html" class="back">&larr; 返回首页</a><input type="text" placeholder="搜索内容" class="search-input" id="article-search">
         <br>
         <!--搜索结果-->
         <div id="article-search-results"></div>
+        <hr>
         <div class="article">
             <h1 class="article-title" id="title">加载ing...<br><img src="loading.gif" width="20" alt="loading"></h1>
             <div id="article-date" class="article-date"></div>
             <div id="content"></div>
         </div>
+        <hr>
         <center>© 2026 cloux.保留所有权利。</center>
 
         <script src="articles.js"></script>
@@ -267,6 +274,21 @@
                         imgs[i].src = 'owo/' + src;
                     }
                 }
+
+                // 从首页搜索结果跳转过来: 自动标记关键词并滚动到第一个匹配, 2秒后高亮淡出
+                var kw = params.get('kw');
+                if (kw) {
+                    var searchInput = document.getElementById('article-search');
+                    searchInput.value = kw;
+                    markMatches(kw, contentEl);
+                    fadeOutMarksAfterDelay(contentEl);
+                    var firstMatch = document.getElementById('match-1');
+                    if (firstMatch) {
+                        setTimeout(function () {
+                            firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 100);
+                    }
+                }
             })();
 
             function searchCurrent() {
@@ -295,8 +317,9 @@
                     resultsEl.innerHTML = '<div class="search-empty">没有找到包含"' + escapeHtml(keyword) + '"的内容</div>';
                     return;
                 }
-                // 在原文中标记匹配位置, 用于跳转
+                // 在原文中标记匹配位置, 用于跳转; 2秒后高亮淡出
                 markMatches(keyword, contentEl);
+                fadeOutMarksAfterDelay(contentEl);
 
                 var html = '<div class="search-empty">找到 ' + matches.length + ' 条匹配:</div>';
                 for (var j = 0; j < matches.length; j++) {
@@ -305,13 +328,19 @@
                 }
                 resultsEl.innerHTML = html;
 
-                // 点击搜索结果跳转到原文位置
+                // 点击搜索结果跳转到原文位置 (标记若已淡出会重新标记一遍再跳)
                 resultsEl.querySelectorAll('.jump-link').forEach(function (link) {
                     link.addEventListener('click', function (e) {
+                        e.preventDefault();
                         var targetId = this.getAttribute('href').substring(1);
                         var target = document.getElementById(targetId);
+                        if (!target) {
+                            // 高亮已淡出移除, 重新标记
+                            markMatches(keyword, contentEl);
+                            fadeOutMarksAfterDelay(contentEl);
+                            target = document.getElementById(targetId);
+                        }
                         if (target) {
-                            e.preventDefault();
                             target.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }
                     });
@@ -365,6 +394,22 @@
                 }
             }
 
+            // 高亮 2 秒后淡出并移除标记: 首页跳转和页内搜索共用
+            function fadeOutMarksAfterDelay(contentEl) {
+                setTimeout(function () {
+                    var marks = contentEl.querySelectorAll('[data-match-mark]');
+                    marks.forEach(function (el) { el.classList.add('mark-fade'); });
+                }, 1700);
+                setTimeout(function () {
+                    var marks = contentEl.querySelectorAll('[data-match-mark]');
+                    marks.forEach(function (el) {
+                        var parent = el.parentNode;
+                        parent.replaceChild(document.createTextNode(el.textContent), el);
+                        parent.normalize();
+                    });
+                }, 2000);
+            }
+
             function escapeHtml(s) {
                 return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
             }
@@ -375,8 +420,11 @@
                 return safe.replace(re, '<mark>$1</mark>');
             }
 
-            document.getElementById('article-search').addEventListener('keydown', function (e) {
-                if (e.key === 'Enter' || e.keyCode === 13) searchCurrent();
+            // 输入自动搜索 (防抖 300ms)
+            var searchDebounce = null;
+            document.getElementById('article-search').addEventListener('input', function () {
+                clearTimeout(searchDebounce);
+                searchDebounce = setTimeout(searchCurrent, 300);
             });
         </script>
     </body>
