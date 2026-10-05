@@ -13,7 +13,11 @@
             font-family: "Sans-serif";
             margin: 0;
             padding: 0;
-            background-color: #75D3FF1A;
+            background-color: #FAFAFA;
+        }
+        .center
+        {
+            margin-left: 3%;
         }
         .emmm
         {
@@ -47,13 +51,25 @@
             background: #75D3FF;
             clear: both;
         }
+        input
+        {
+            width: 50%;
+            height: 30px;
+            border: none;
+            background-color: #FAFAFA;
+        }
+        input:focus
+        {
+            outline: none;
+            border: #75D3FF solid 2px;
+        }
         .back
         {
             display: inline-block;
             margin: 10px;
             padding: 5px 10px;
             border: #75D3FF solid 2px;
-            background-color: #75D3FF1A;
+            background-color: #FAFAFA;
         }
         .search-input
         {
@@ -61,7 +77,7 @@
             margin: 10px 10px 10px 0;
             padding: 5px;
             border: #75D3FF solid 2px;
-            background-color: #75D3FF1A;
+            background-color: #FAFAFA;
         }
         .search-input:focus
         {
@@ -74,13 +90,13 @@
             margin: 10px;
             padding: 5px 10px;
             border: #75D3FF solid 2px;
-            background-color: #75D3FF1A;
+            background-color: #FAFAFA;
             cursor: pointer;
         }
         .search-btn:hover
         {
             background-color: #75D3FF;
-            color: #fff;
+            color: #FAFAFA;
         }
         #article-search-results
         {
@@ -91,8 +107,8 @@
         {
             margin: 8px 0;
             padding: 8px 12px;
-            border: #75D3FF solid 1px;
-            background-color: #fff;
+            border: #75D3FF solid 2px;
+            background-color: #FAFAFA;
         }
         .search-result-item mark
         {
@@ -220,7 +236,7 @@
         <br>
         <h1><font color="#75D3FF">&nbsp;&nbsp;&nbsp;cloux's </font><font color="#464646">blog</font></h1>
         <br>
-        <a href="index.html" class="back">&larr; 返回首页</a><input type="text" placeholder="搜索内容" class="search-input" id="article-search">
+        <a href="index.html" class="back">&larr; 返回首页</a><br>&nbsp;&nbsp;&nbsp;<input type="text" placeholder="搜索内容" id="article-search">
         <br>
         <!--搜索结果-->
         <div id="article-search-results"></div>
@@ -230,10 +246,8 @@
             <div id="article-date" class="article-date"></div>
             <div id="content"></div>
         </div>
-        <hr>
-        <center>© 2026 cloux.保留所有权利。</center>
+        <p class="center">© 2026 cloux.保留所有权利。</p>
 
-        <script src="articles.js"></script>
         <script>
             (function () {
                 var params = new URLSearchParams(location.search);
@@ -241,54 +255,66 @@
                 var titleEl = document.getElementById('title');
                 var contentEl = document.getElementById('content');
 
-                if (!file || !window.__ARTICLES__ || !window.__ARTICLES__[file]) {
+                if (!file) {
                     titleEl.textContent = '文章不存在';
                     contentEl.innerHTML = '<p>找不到这篇文章。请从 <a href="index.html">首页</a> 进入。</p>';
                     return;
                 }
 
-                var md = window.__ARTICLES__[file];
-                var displayTitle = file.replace(/^.*?\s/, '').replace(/\.md$/i, '');
-                titleEl.textContent = displayTitle;
-                document.title = displayTitle + " - cloux's blog";
+                // 直接从 owo/ 读取 .md 文件
+                fetch('owo/' + encodeURIComponent(file))
+                    .then(function (res) {
+                        if (!res.ok) throw new Error('not found');
+                        return res.text();
+                    })
+                    .then(function (md) {
+                        var displayTitle = file.replace(/\.md$/i, '');
+                        titleEl.textContent = displayTitle;
+                        document.title = displayTitle + " - cloux's blog";
 
-                // 从文件名解析日期 (格式: "2026-8-17 测试文档.md")
-                var dateEl = document.getElementById('article-date');
-                var dateMatch = file.match(/^(\d{4})-(\d{1,2})-(\d{1,2})\s/);
-                if (dateMatch) {
-                    var y = dateMatch[1];
-                    var m = dateMatch[2].padStart(2, '0');
-                    var d = dateMatch[3].padStart(2, '0');
-                    dateEl.textContent = y + '-' + m + '-' + d;
-                } else {
-                    dateEl.style.display = 'none';
-                }
+                        // 从 URL 参数读取日期 (首页链接带过来)
+                        var dateEl = document.getElementById('article-date');
+                        var dateParam = params.get('date');
+                        var dateMatch = dateParam ? dateParam.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/) : null;
+                        if (dateMatch) {
+                            var y = dateMatch[1];
+                            var m = dateMatch[2].padStart(2, '0');
+                            var d = dateMatch[3].padStart(2, '0');
+                            dateEl.textContent = y + '-' + m + '-' + d;
+                        } else {
+                            dateEl.style.display = 'none';
+                        }
 
-                var html = marked.parse(md);
-                contentEl.innerHTML = html;
+                        var html = marked.parse(md);
+                        contentEl.innerHTML = html;
 
-                var imgs = contentEl.querySelectorAll('img');
-                for (var i = 0; i < imgs.length; i++) {
-                    var src = imgs[i].getAttribute('src') || '';
-                    if (!/^(https?:|\/|owo\/|data:)/i.test(src)) {
-                        imgs[i].src = 'owo/' + src;
-                    }
-                }
+                        var imgs = contentEl.querySelectorAll('img');
+                        for (var i = 0; i < imgs.length; i++) {
+                            var src = imgs[i].getAttribute('src') || '';
+                            if (!/^(https?:|\/|owo\/|data:)/i.test(src)) {
+                                imgs[i].src = 'owo/' + src;
+                            }
+                        }
 
-                // 从首页搜索结果跳转过来: 自动标记关键词并滚动到第一个匹配, 2秒后高亮淡出
-                var kw = params.get('kw');
-                if (kw) {
-                    var searchInput = document.getElementById('article-search');
-                    searchInput.value = kw;
-                    markMatches(kw, contentEl);
-                    fadeOutMarksAfterDelay(contentEl);
-                    var firstMatch = document.getElementById('match-1');
-                    if (firstMatch) {
-                        setTimeout(function () {
-                            firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        }, 100);
-                    }
-                }
+                        // 从首页搜索结果跳转过来: 自动标记关键词并滚动到第一个匹配, 2秒后高亮淡出
+                        var kw = params.get('kw');
+                        if (kw) {
+                            var searchInput = document.getElementById('article-search');
+                            searchInput.value = kw;
+                            markMatches(kw, contentEl);
+                            fadeOutMarksAfterDelay(contentEl);
+                            var firstMatch = document.getElementById('match-1');
+                            if (firstMatch) {
+                                setTimeout(function () {
+                                    firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                }, 100);
+                            }
+                        }
+                    })
+                    .catch(function () {
+                        titleEl.textContent = '文章不存在';
+                        contentEl.innerHTML = '<p>找不到这篇文章。请从 <a href="index.html">首页</a> 进入。</p>';
+                    });
             })();
 
             function searchCurrent() {
